@@ -1,9 +1,9 @@
 import Navbar from "@/components/Navbar";
 import PMCapabilities from "@/components/PMCapabilities";
 import HeroFlow from "@/components/HeroFlow";
-import SafeLightCoding from "@/components/SafeLightCoding";
+import Extensions from "@/components/Extensions";
 import MontyViews from "@/components/MontyViews";
-import MeetMonty from "@/components/MeetMonty";
+import SafeLightCoding from "@/components/SafeLightCoding";
 import Pricing from "@/components/Pricing";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -38,20 +38,20 @@ const Index = () => {
         </div>
       </section>
 
-      {/* PM Capabilities */}
+      {/* PM Capabilities (5 Cards) */}
       <PMCapabilities />
 
-      {/* Input → Output Intelligence */}
+      {/* StoryCraft-AI Section */}
       <HeroFlow />
 
-      {/* Philosophy */}
-      <SafeLightCoding />
-
-      {/* Meet Monty */}
-      <MeetMonty />
+      {/* Extensions Section */}
+      <Extensions />
 
       {/* Monty's Views */}
       <MontyViews />
+
+      {/* Safe Light Coding */}
+      <SafeLightCoding />
 
       {/* Pricing */}
       <Pricing />
