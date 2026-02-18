@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 215 25% 16%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 16%;
+
+    --primary: 213 55% 33%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 14% 93%;
+    --secondary-foreground: 215 20% 28%;
+
+    --muted: 215 14% 95%;
+    --muted-foreground: 215 10% 44%;
+
+    --accent: 213 35% 90%;
+    --accent-foreground: 213 55% 28%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 13% 87%;
+    --input: 215 13% 87%;
+    --ring: 213 55% 33%;
+
+    --radius: 0.75rem;
+
+    /* Silverile brand tokens – light */
+    --intent: 213 55% 33%;
+    --intent-foreground: 213 60% 22%;
+    --intent-muted: 213 25% 93%;
+
+    --execution: 200 50% 38%;
+    --execution-foreground: 200 55% 25%;
+    --execution-muted: 200 25% 93%;
+
+    --validation: 152 42% 35%;
+    --validation-foreground: 152 48% 22%;
+    --validation-muted: 152 22% 93%;
+
+    --feedback: 35 60% 45%;
+    --feedback-foreground: 35 65% 28%;
+    --feedback-muted: 35 25% 93%;
+
+    --glow-intent: 213 55% 42%;
+    --glow-execution: 200 50% 45%;
+    --glow-validation: 152 42% 42%;
+    --glow-feedback: 35 60% 52%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(213 25% 95%), hsl(0 0% 98%) 50%, hsl(200 18% 96%));
+    --gradient-intent: linear-gradient(135deg, hsl(213 55% 33%), hsl(225 48% 38%));
+    --gradient-execution: linear-gradient(135deg, hsl(200 50% 38%), hsl(215 48% 42%));
+    --gradient-validation: linear-gradient(135deg, hsl(152 42% 35%), hsl(165 38% 33%));
+    --gradient-feedback: linear-gradient(135deg, hsl(35 60% 45%), hsl(25 55% 42%));
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 20% 28%;
+    --sidebar-primary: 213 55% 33%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 213 35% 90%;
+    --sidebar-accent-foreground: 213 55% 28%;
+    --sidebar-border: 215 13% 87%;
+    --sidebar-ring: 213 55% 33%;
+  }
+
+  .dark {
+    --background: 220 20% 7%;
+    --foreground: 215 20% 92%;
+
+    --card: 220 18% 11%;
+    --card-foreground: 215 20% 92%;
+
+    --popover: 220 18% 11%;
+    --popover-foreground: 215 20% 92%;
+
+    --primary: 213 55% 38%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 16% 16%;
+    --secondary-foreground: 215 18% 85%;
+
+    --muted: 220 14% 14%;
+    --muted-foreground: 215 12% 50%;
+
+    --accent: 213 40% 22%;
+    --accent-foreground: 213 70% 78%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 14% 18%;
+    --input: 220 14% 18%;
+    --ring: 213 55% 38%;
+
+    /* Silverile brand tokens – dark */
+    --intent: 213 55% 48%;
+    --intent-foreground: 213 80% 85%;
+    --intent-muted: 213 35% 16%;
+
+    --execution: 200 60% 44%;
+    --execution-foreground: 200 75% 85%;
+    --execution-muted: 200 30% 14%;
+
+    --validation: 152 50% 40%;
+    --validation-foreground: 152 65% 78%;
+    --validation-muted: 152 30% 13%;
+
+    --feedback: 35 70% 50%;
+    --feedback-foreground: 35 80% 85%;
+    --feedback-muted: 35 30% 14%;
+
+    --glow-intent: 213 65% 55%;
+    --glow-execution: 200 65% 52%;
+    --glow-validation: 152 55% 48%;
+    --glow-feedback: 35 75% 55%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(213 40% 10%), hsl(220 20% 7%) 50%, hsl(200 30% 9%));
+    --gradient-intent: linear-gradient(135deg, hsl(213 55% 48%), hsl(225 50% 45%));
+    --gradient-execution: linear-gradient(135deg, hsl(200 60% 44%), hsl(215 55% 48%));
+    --gradient-validation: linear-gradient(135deg, hsl(152 50% 40%), hsl(165 45% 38%));
+    --gradient-feedback: linear-gradient(135deg, hsl(35 70% 50%), hsl(25 65% 46%));
+
+    --sidebar-background: 220 18% 11%;
+    --sidebar-foreground: 215 18% 85%;
+    --sidebar-primary: 213 55% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 213 40% 22%;
+    --sidebar-accent-foreground: 213 70% 78%;
+    --sidebar-border: 220 14% 18%;
+    --sidebar-ring: 213 55% 38%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Lato', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lato', system-ui, sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer utilities {
+  .text-gradient-intent {
+    background: var(--gradient-intent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-hero {
+    background: linear-gradient(135deg, hsl(var(--intent)), hsl(var(--execution)), hsl(var(--validation)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-intent {
+    box-shadow: 0 0 30px -5px hsl(213 65% 55% / 0.35);
+  }
+
+  .glow-execution {
+    box-shadow: 0 0 30px -5px hsl(200 65% 52% / 0.35);
+  }
+
+  .glow-validation {
+    box-shadow: 0 0 30px -5px hsl(152 55% 48% / 0.35);
+  }
+
+  .glow-feedback {
+    box-shadow: 0 0 30px -5px hsl(35 75% 55% / 0.35);
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+}
