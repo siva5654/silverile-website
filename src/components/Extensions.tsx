@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { BookOpen, GitBranch } from "lucide-react";
 import vscodeLogo from "@/assets/vscode-logo.svg";
 import intellijLogo from "@/assets/intellij-logo.svg";
+import silverileLogo from "@/assets/silverile-logo-hero.png";
 
 const EXTENSIONS = [
   {
@@ -61,9 +62,9 @@ const Extensions = () => {
             <span className="mb-3 inline-block rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-primary">
               IDE Extensions
             </span>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              Silverile in{" "}
-              <span className="text-gradient-hero">Your Editor</span>
+            <h2 className="mt-4 flex items-center justify-center gap-3 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              <img src={silverileLogo} alt="Silverile" className="h-9 sm:h-11 md:h-14 w-auto" />
+              <span>in <span className="text-gradient-hero">Your Editor</span></span>
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
               Bring Code&nbsp;to&nbsp;Story and Code&nbsp;Relevance directly
