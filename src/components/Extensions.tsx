@@ -128,10 +128,10 @@ const Extensions = () => {
 
                 {/* CTA */}
                 <div className="mt-5">
-                  <button
-                    className="w-full rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
+                <button
+                    className="w-full rounded-lg border border-primary/30 bg-primary/5 px-4 py-2.5 text-sm font-medium text-foreground transition-all hover:border-primary/50 hover:bg-primary/10"
                   >
-                    Coming Soon — {ext.ide}
+                    Get for {ext.ide}
                   </button>
                 </div>
               </motion.div>
