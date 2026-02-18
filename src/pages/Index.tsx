@@ -34,8 +34,8 @@ const Index = () => {
             transition={{ duration: 0.7 }}
             className="flex flex-col items-center text-center py-12 sm:py-16 md:py-24"
           >
-            <h2 className="text-base font-light tracking-[0.2em] uppercase text-muted-foreground sm:text-lg md:text-xl lg:text-2xl">
-              Your <span className="font-semibold text-foreground">"Agentic Co-Project Manager"</span>
+            <h2 className="text-base font-light tracking-[0.2em] text-muted-foreground sm:text-lg md:text-xl lg:text-2xl">
+              <span className="text-foreground font-medium">Your</span> <span className="font-semibold text-foreground">"Agentic Co-Project Manager"</span>
             </h2>
           </motion.div>
         </div>
