@@ -34,14 +34,6 @@ const Index = () => {
             transition={{ duration: 0.9, ease: "easeOut" }}
             className="flex flex-col items-center text-center py-16 sm:py-20 md:py-28"
           >
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-sm font-medium tracking-[0.25em] text-muted-foreground mb-4 sm:text-base"
-            >
-              Introducing
-            </motion.p>
             <h2 className="text-2xl font-light tracking-wide text-foreground sm:text-3xl md:text-4xl lg:text-5xl">
               Your{" "}
               <span className="font-bold text-gradient-hero">
