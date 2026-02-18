@@ -62,8 +62,8 @@ const Extensions = () => {
             <span className="mb-3 inline-block rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-primary">
               IDE Extensions
             </span>
-            <h2 className="mt-4 flex items-center justify-center gap-3 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              <SilerileLogo className="h-9 sm:h-11 md:h-14 w-auto" />
+            <h2 className="mt-4 inline-flex items-baseline justify-center gap-2 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              <SilerileLogo className="h-7 sm:h-9 md:h-11 w-auto self-center" />
               <span>in <span className="text-gradient-hero">Your Editor</span></span>
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
