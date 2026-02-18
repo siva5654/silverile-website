@@ -26,17 +26,34 @@ const Index = () => {
         >
           <source src={heroVideo} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-background/60" />
+        <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px]" />
         <div className="container relative z-10 mx-auto px-4 sm:px-6">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="flex flex-col items-center text-center py-12 sm:py-16 md:py-24"
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            className="flex flex-col items-center text-center py-16 sm:py-20 md:py-28"
           >
-            <h2 className="text-base font-light tracking-[0.2em] text-muted-foreground sm:text-lg md:text-xl lg:text-2xl">
-              <span className="text-foreground font-medium">Your</span> <span className="font-semibold text-foreground">"Agentic Co-Project Manager"</span>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-sm font-medium tracking-[0.25em] text-muted-foreground mb-4 sm:text-base"
+            >
+              Introducing
+            </motion.p>
+            <h2 className="text-2xl font-light tracking-wide text-foreground sm:text-3xl md:text-4xl lg:text-5xl">
+              Your{" "}
+              <span className="font-bold text-gradient-hero">
+                Agentic Co-Project Manager
+              </span>
             </h2>
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="mt-6 h-[2px] w-24 rounded-full bg-gradient-to-r from-intent via-execution to-validation sm:w-32"
+            />
           </motion.div>
         </div>
       </section>
