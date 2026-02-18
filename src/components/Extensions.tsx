@@ -1,11 +1,13 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Code2, BookOpen, GitBranch, Puzzle } from "lucide-react";
+import { BookOpen, GitBranch } from "lucide-react";
+import vscodeLogo from "@/assets/vscode-logo.svg";
+import intellijLogo from "@/assets/intellij-logo.svg";
 
 const EXTENSIONS = [
   {
     ide: "VS Code",
-    icon: Code2,
+    logo: vscodeLogo,
     color: "intent",
     features: [
       {
@@ -22,7 +24,7 @@ const EXTENSIONS = [
   },
   {
     ide: "IntelliJ",
-    icon: Puzzle,
+    logo: intellijLogo,
     color: "execution",
     features: [
       {
@@ -88,10 +90,7 @@ const Extensions = () => {
                     className="flex h-11 w-11 items-center justify-center rounded-xl"
                     style={{ background: `hsl(var(--${ext.color}) / 0.12)` }}
                   >
-                    <ext.icon
-                      className="h-5 w-5"
-                      style={{ color: `hsl(var(--${ext.color}))` }}
-                    />
+                    <img src={ext.logo} alt={ext.ide} className="h-6 w-6" />
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-foreground">
