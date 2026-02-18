@@ -8,7 +8,6 @@ import Pricing from "@/components/Pricing";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import silverileHeroLogo from "@/assets/silverile-logo-hero.png";
 import montySleeping from "@/assets/monty-sleeping.png";
 
 const Index = () => {
@@ -27,22 +26,15 @@ const Index = () => {
             transition={{ duration: 0.7 }}
             className="flex flex-col items-center text-center"
           >
-            <div className="relative inline-block">
-              <img
-                src={silverileHeroLogo}
-                alt="Silverile.AI"
-                className="h-16 w-auto sm:h-20 md:h-24 lg:h-28 xl:h-32"
-              />
-            </div>
+            <img
+              src={montySleeping}
+              alt="Monty sleeping"
+              className="h-24 sm:h-32 md:h-40 lg:h-48 xl:h-56 w-auto drop-shadow-lg"
+            />
             <div className="relative mt-4">
               <h2 className="text-base font-light tracking-[0.2em] uppercase text-muted-foreground sm:text-lg md:text-xl lg:text-2xl">
                 Your <span className="font-semibold text-foreground">"Agentic Co-Project Manager"</span>
               </h2>
-              <img
-                src={montySleeping}
-                alt="Monty sleeping"
-                className="absolute -top-10 right-0 translate-x-1/3 h-16 sm:h-20 md:h-24 lg:h-28 w-auto drop-shadow-lg pointer-events-none"
-              />
             </div>
           </motion.div>
         </div>
