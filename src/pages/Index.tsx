@@ -17,16 +17,6 @@ const Index = () => {
 
       {/* Hero headline */}
       <section className="relative overflow-hidden pt-20 pb-4 lg:pt-24">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px]" />
         <div className="container relative z-10 mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -46,6 +36,16 @@ const Index = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="mt-6 h-[2px] w-24 rounded-full bg-gradient-to-r from-intent via-execution to-validation sm:w-32"
             />
+            <div className="mt-8 w-full max-w-2xl mx-auto">
+              <video
+                autoPlay
+                muted
+                playsInline
+                className="w-full rounded-xl shadow-2xl"
+              >
+                <source src={heroVideo} type="video/mp4" />
+              </video>
+            </div>
           </motion.div>
         </div>
       </section>
