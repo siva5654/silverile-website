@@ -16,13 +16,13 @@ const Index = () => {
       <Navbar />
 
       {/* Hero headline */}
-      <section className="relative overflow-hidden pt-16 pb-4 lg:pt-20">
-        <div className="container relative z-10 mx-auto px-4 sm:px-6">
+      <section className="relative overflow-hidden pt-14 pb-2">
+        <div className="w-full mx-auto px-4 sm:px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
-            className="flex flex-col items-center text-center py-8 sm:py-10 md:py-12"
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="flex flex-col items-center text-center py-4 sm:py-6 md:py-8"
           >
             <div className="w-20 sm:w-24 mx-auto mb-4">
               <video
