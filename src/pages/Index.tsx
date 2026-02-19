@@ -9,7 +9,6 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import heroVideo from "@/assets/hero-video.mp4";
-import montyWave from "@/assets/monty-wave.png";
 
 const Index = () => {
   return (
@@ -17,7 +16,7 @@ const Index = () => {
       <Navbar />
 
       {/* Hero headline */}
-      <section className="relative overflow-hidden pt-0 pb-4">
+      <section className="relative overflow-hidden pt-16 pb-4 lg:pt-20">
         <div className="container relative z-10 mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -31,13 +30,9 @@ const Index = () => {
                 muted
                 playsInline
                 className="w-full rounded-lg"
-                poster={montyWave}
               >
                 <source src={heroVideo} type="video/mp4" />
               </video>
-              <noscript>
-                <img src={montyWave} alt="Monty waving" className="w-full rounded-lg" />
-              </noscript>
             </div>
             <h2 className="text-2xl font-light tracking-wide text-foreground sm:text-3xl md:text-4xl lg:text-5xl">
               Your{" "}
