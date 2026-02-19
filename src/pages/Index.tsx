@@ -36,7 +36,7 @@ const Index = () => {
             </div>
             <h2 className="text-2xl font-light tracking-wide text-foreground sm:text-3xl md:text-4xl lg:text-5xl">
               Your{" "}
-              <span className="font-bold text-gradient-hero">
+              <span className="font-bold text-primary">
                 Agentic Co-Project Manager
               </span>
             </h2>

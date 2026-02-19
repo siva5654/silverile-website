@@ -65,7 +65,7 @@ const MeetMonty = () => {
                   className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl"
                 >
                   Say Hi to{" "}
-                  <span className="text-gradient-hero">Monty</span>
+                  <span className="text-primary">Monty</span>
                 </motion.h2>
 
                 <motion.p

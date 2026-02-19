@@ -558,7 +558,7 @@ const HeroFlow = () => {
             StoryCraft-AI : Intelligence Engine
           </div>
           <h2 className="mx-auto whitespace-nowrap text-2xl font-extrabold leading-tight tracking-tight text-foreground sm:text-3xl md:text-4xl lg:text-[2.75rem] xl:text-5xl">
-            <span className="inline-block rounded-xl border border-primary/30 bg-primary/10 px-3 py-1 font-black text-primary shadow-sm">Build</span> what was <span className="text-gradient-hero font-black">intended</span>. <span className="inline-block rounded-xl border border-primary/30 bg-primary/10 px-3 py-1 font-black text-primary shadow-sm">Verify</span> what was <span className="text-gradient-hero font-black">built</span>.
+            <span className="inline-block rounded-xl border border-primary/30 bg-primary/10 px-3 py-1 font-black text-primary shadow-sm">Build</span> what was <span className="text-primary font-black">intended</span>. <span className="inline-block rounded-xl border border-primary/30 bg-primary/10 px-3 py-1 font-black text-primary shadow-sm">Verify</span> what was <span className="text-primary font-black">built</span>.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
             Text. Design. Code.{" "}
@@ -635,7 +635,7 @@ const HeroFlow = () => {
           <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base md:text-lg">
             Traditional tools{" "}
             <span className="font-semibold text-foreground">track what you build</span>. Silverile{" "}
-            <span className="text-gradient-hero font-bold">
+            <span className="text-primary font-bold">
               verifies that what you ship matches what you intended
             </span>
             — closing the gap between requirements and reality.

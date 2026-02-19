@@ -120,7 +120,7 @@ const Pricing = () => {
           </span>
           <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
             <span className="text-foreground">Simple, </span>
-            <span className="text-gradient-hero">Transparent</span>
+            <span className="text-primary">Transparent</span>
             <span className="text-foreground"> Pricing</span>
           </h2>
           <p className="mt-4 text-base text-muted-foreground lg:text-lg">
