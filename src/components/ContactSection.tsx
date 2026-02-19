@@ -66,7 +66,7 @@ const ContactSection = () => {
             </span>
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
               <span className="text-foreground">Let's </span>
-              <span className="text-gradient-hero">Schedule</span>
+              <span className="text-primary">Schedule</span>
               <span className="text-foreground"> a Meeting</span>
             </h2>
             <p className="mt-4 text-base text-muted-foreground lg:text-lg leading-relaxed">
