@@ -8,7 +8,7 @@ import Pricing from "@/components/Pricing";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import heroVideo from "@/assets/hero-video.mp4";
+import heroVideo from "@/assets/hero-video.mov";
 
 const Index = () => {
   return (
@@ -31,7 +31,7 @@ const Index = () => {
                 playsInline
                 className="w-full rounded-lg"
               >
-                <source src={heroVideo} type="video/mp4" />
+                <source src={heroVideo} type="video/quicktime" />
               </video>
             </div>
             <h2 className="text-2xl font-light tracking-wide text-foreground sm:text-3xl md:text-4xl lg:text-5xl">
