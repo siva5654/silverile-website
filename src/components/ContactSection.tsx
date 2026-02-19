@@ -51,7 +51,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" ref={ref} className="relative py-20 lg:py-28">
+    <section id="contact" ref={ref} className="relative py-12 lg:py-16">
       <div className="absolute inset-0 bg-grid opacity-[0.04]" />
       <div className="container relative z-10 mx-auto px-4 sm:px-6">
         <div className="mx-auto max-w-5xl grid gap-12 lg:grid-cols-2 items-start">

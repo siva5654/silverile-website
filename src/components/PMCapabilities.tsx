@@ -258,7 +258,7 @@ const PMCapabilities = () => {
   };
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-10 lg:py-14">
+    <section ref={ref} className="relative overflow-hidden py-8 lg:py-10">
       <div className="absolute inset-0 bg-grid opacity-[0.06]" />
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6">

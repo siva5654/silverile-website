@@ -105,7 +105,7 @@ const Pricing = () => {
   const [billing, setBilling] = useState<BillingCycle>("monthly");
 
   return (
-    <section id="pricing" ref={ref} className="relative py-20 lg:py-28">
+    <section id="pricing" ref={ref} className="relative py-12 lg:py-16">
       <div className="absolute inset-0 bg-grid opacity-[0.04]" />
       <div className="container relative z-10 mx-auto px-4 sm:px-6">
         {/* Header */}
