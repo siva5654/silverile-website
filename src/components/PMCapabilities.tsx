@@ -94,16 +94,19 @@ const CapabilityCard = ({
   index,
   isInView,
   isRevealed,
+  onCardHover,
 }: {
   cap: (typeof CAPABILITIES)[0];
   index: number;
   isInView: boolean;
   isRevealed: boolean;
+  onCardHover: () => void;
 }) => {
   const Icon = cap.icon;
 
   return (
     <motion.div
+      onMouseEnter={onCardHover}
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08 }}
@@ -196,15 +199,19 @@ const CapabilityCard = ({
 const PMCapabilities = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  // Track how many cards have been revealed so far (0 = none, 5 = all)
   const [revealedCount, setRevealedCount] = useState(0);
   const isPaused = useRef(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const revealedCountRef = useRef(0);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    revealedCountRef.current = revealedCount;
+  }, [revealedCount]);
 
   const scheduleNext = (current: number) => {
     const totalCards = CAPABILITIES.length;
     if (current < totalCards) {
-      // Reveal next card after 2s
       timeoutRef.current = setTimeout(() => {
         if (isPaused.current) return;
         const next = current + 1;
@@ -212,11 +219,9 @@ const PMCapabilities = () => {
         scheduleNext(next);
       }, 2000);
     } else {
-      // All cards revealed — hold for 5s, then reset
       timeoutRef.current = setTimeout(() => {
         if (isPaused.current) return;
         setRevealedCount(0);
-        // Small gap before restarting
         timeoutRef.current = setTimeout(() => {
           if (isPaused.current) return;
           setRevealedCount(1);
@@ -228,7 +233,6 @@ const PMCapabilities = () => {
 
   useEffect(() => {
     if (!isInView) return;
-    // Show all cards in default state for 2s before starting animation
     timeoutRef.current = setTimeout(() => {
       setRevealedCount(1);
       scheduleNext(1);
@@ -239,15 +243,18 @@ const PMCapabilities = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView]);
 
-  const handleHover = () => {
+  const handleCardHover = (cardIndex: number) => {
     isPaused.current = true;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    // Reveal all cards up to and including the hovered one
+    const newCount = cardIndex + 1;
+    setRevealedCount(newCount);
   };
 
-  const handleUnhover = () => {
+  const handleGridLeave = () => {
     isPaused.current = false;
-    // Resume from current state
-    scheduleNext(revealedCount);
+    // Resume animation from the current revealed count
+    scheduleNext(revealedCountRef.current);
   };
 
   return (
@@ -259,11 +266,17 @@ const PMCapabilities = () => {
         {/* Cards Grid */}
         <div
           className="mx-auto grid max-w-7xl gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
-          onMouseEnter={handleHover}
-          onMouseLeave={handleUnhover}
+          onMouseLeave={handleGridLeave}
         >
           {CAPABILITIES.map((cap, i) => (
-            <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} isRevealed={i < revealedCount} />
+            <CapabilityCard
+              key={cap.title}
+              cap={cap}
+              index={i}
+              isInView={isInView}
+              isRevealed={i < revealedCount}
+              onCardHover={() => handleCardHover(i)}
+            />
           ))}
         </div>
 
