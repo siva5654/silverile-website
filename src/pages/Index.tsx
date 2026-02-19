@@ -22,8 +22,18 @@ const Index = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
-            className="flex flex-col items-center text-center py-16 sm:py-20 md:py-28"
+            className="flex flex-col items-center text-center py-8 sm:py-10 md:py-12"
           >
+            <div className="w-full max-w-xs sm:max-w-sm mx-auto mb-4">
+              <video
+                autoPlay
+                muted
+                playsInline
+                className="w-full rounded-lg"
+              >
+                <source src={heroVideo} type="video/mp4" />
+              </video>
+            </div>
             <h2 className="text-2xl font-light tracking-wide text-foreground sm:text-3xl md:text-4xl lg:text-5xl">
               Your{" "}
               <span className="font-bold text-gradient-hero">
@@ -34,18 +44,8 @@ const Index = () => {
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="mt-6 h-[2px] w-24 rounded-full bg-gradient-to-r from-intent via-execution to-validation sm:w-32"
+              className="mt-4 h-[2px] w-24 rounded-full bg-gradient-to-r from-intent via-execution to-validation sm:w-32"
             />
-            <div className="mt-8 w-full max-w-2xl mx-auto">
-              <video
-                autoPlay
-                muted
-                playsInline
-                className="w-full rounded-xl shadow-2xl"
-              >
-                <source src={heroVideo} type="video/mp4" />
-              </video>
-            </div>
           </motion.div>
         </div>
       </section>
