@@ -135,7 +135,7 @@ const SafeLightCoding = () => {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-20 lg:py-32">
+    <section ref={ref} className="relative overflow-hidden py-12 lg:py-16">
       <div className="absolute inset-0 bg-grid opacity-[0.04]" />
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6">

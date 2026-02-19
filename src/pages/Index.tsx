@@ -16,7 +16,7 @@ const Index = () => {
       <Navbar />
 
       {/* Hero headline */}
-      <section className="relative overflow-hidden pt-16 pb-4 lg:pt-20">
+      <section className="relative overflow-hidden pt-12 pb-2 lg:pt-14">
         <div className="container relative z-10 mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

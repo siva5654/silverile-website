@@ -540,7 +540,7 @@ const HeroFlow = () => {
   const goPrev = () => setActiveStep((p) => Math.max(p - 1, 0));
 
   return (
-    <section className="relative overflow-hidden py-16 lg:py-20">
+    <section className="relative overflow-hidden py-12 lg:py-16">
       {/* Background */}
       <div className="absolute inset-0 bg-grid opacity-10" />
       <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
