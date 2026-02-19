@@ -24,7 +24,7 @@ const Index = () => {
             transition={{ duration: 0.9, ease: "easeOut" }}
             className="flex flex-col items-center text-center py-8 sm:py-10 md:py-12"
           >
-            <div className="w-full max-w-xs sm:max-w-sm mx-auto mb-4">
+            <div className="w-20 sm:w-24 mx-auto mb-4">
               <video
                 autoPlay
                 muted
