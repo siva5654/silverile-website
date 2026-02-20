@@ -21,9 +21,17 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   useEffect(() => {
+    // Apply theme to <html> for Tailwind dark-mode utilities
     const root = document.documentElement;
     root.classList.remove("light", "dark");
     root.classList.add(theme);
+
+    // Also apply to all .silverile-landing wrappers for scoped CSS vars
+    document.querySelectorAll(".silverile-landing").forEach((el) => {
+      el.classList.remove("light", "dark");
+      el.classList.add(theme);
+    });
+
     localStorage.setItem("silverile-theme", theme);
   }, [theme]);
 
