@@ -12,7 +12,7 @@ import heroVideo from "@/assets/hero-video.mp4";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="silverile-landing min-h-screen bg-background">
       <Navbar />
 
       {/* Hero headline */}
