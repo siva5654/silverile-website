@@ -154,7 +154,7 @@ const CapabilityCard = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.25 }}
-            className="absolute inset-0 flex flex-col justify-start gap-3 overflow-y-auto p-4"
+            className="absolute inset-0 flex flex-col justify-start gap-3 overflow-hidden p-4"
             style={{
               background: `linear-gradient(135deg, hsl(var(--${cap.color}) / 0.12), hsl(var(--${cap.color}) / 0.05))`,
               borderColor: `hsl(var(--${cap.color}) / 0.3)`,
@@ -167,17 +167,28 @@ const CapabilityCard = ({
             </div>
             <p className="text-[11px] leading-relaxed text-muted-foreground">{cap.tagline}</p>
             <ul className="flex flex-col gap-1.5">
-              {cap.bullets.map((b) => (
-                <li key={b} className="flex items-start gap-2 text-[11px] text-muted-foreground sm:text-xs">
+              {cap.bullets.map((b, bi) => (
+                <motion.li
+                  key={b}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2, delay: 0.1 + bi * 0.06 }}
+                  className="flex items-start gap-2 text-[11px] text-muted-foreground sm:text-xs"
+                >
                   <Zap
                     className="mt-0.5 h-3 w-3 shrink-0"
                     style={{ color: `hsl(var(--${cap.color}) / 0.6)` }}
                   />
                   {b}
-                </li>
+                </motion.li>
               ))}
             </ul>
-            <div className="mt-auto rounded-lg border border-border/50 bg-background/60 p-2.5">
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, delay: 0.35 }}
+              className="mt-auto rounded-lg border border-border/50 bg-background/60 p-2.5"
+            >
               <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
                 <ArrowRight className="h-2.5 w-2.5" />
                 {cap.differentiator}
@@ -188,7 +199,7 @@ const CapabilityCard = ({
               >
                 {cap.silverile}
               </p>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
