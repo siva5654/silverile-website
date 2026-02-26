@@ -176,7 +176,7 @@ const RegisterSection = () => {
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-3 grid gap-4 sm:grid-cols-3 items-center"
+            className="lg:col-span-3 grid gap-4 sm:grid-cols-3 items-stretch"
           >
             {plans.map((plan, i) => {
               const isSelected = selectedPlan === plan.id;
