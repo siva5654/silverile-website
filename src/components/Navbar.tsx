@@ -25,6 +25,12 @@ const Navbar = () => {
           <a href="#pricing" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
             Pricing
           </a>
+          <a href="#pricing" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            Pricing
+          </a>
+          <a href="#register" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            Register
+          </a>
           <a href="#contact" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
             Contact Us
           </a>

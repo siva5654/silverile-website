@@ -5,6 +5,7 @@ import Extensions from "@/components/Extensions";
 import MontyViews from "@/components/MontyViews";
 import SafeLightCoding from "@/components/SafeLightCoding";
 import Pricing from "@/components/Pricing";
+import RegisterSection from "@/components/RegisterSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -67,6 +68,9 @@ const Index = () => {
 
       {/* Pricing */}
       <Pricing />
+
+      {/* Register */}
+      <RegisterSection />
 
       {/* Contact */}
       <ContactSection />
