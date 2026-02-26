@@ -170,7 +170,7 @@ const RegisterSection = () => {
           </div>
         </motion.div>
 
-        <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-5 items-start">
+        <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-5 items-center">
           {/* Plans — Left (3 cols) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
