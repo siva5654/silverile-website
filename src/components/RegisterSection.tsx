@@ -258,7 +258,7 @@ const RegisterSection = () => {
             </div>
 
             {/* Fan-spread cards */}
-            <div className="relative flex items-center justify-center py-6 overflow-hidden" style={{ minHeight: 560 }}>
+            <div className="relative flex items-center justify-center py-6" style={{ minHeight: 560 }}>
               {plans.map((plan) => {
                 const Icon = plan.icon;
                 const isActive = plan.id === selectedPlan;
@@ -296,11 +296,13 @@ const RegisterSection = () => {
                     style={{
                       position: "absolute",
                       width: "78%",
+                      left: "50%",
+                      marginLeft: "-39%",
                       zIndex,
                       transformOrigin: "bottom center",
                       borderColor: `hsl(var(--${plan.color}) / ${isActive ? 0.5 : 0.35})`,
                       background: isActive
-                        ? `linear-gradient(175deg, hsl(var(--card)) 40%, hsl(var(--${plan.color}) / 0.08) 100%)`
+                        ? `hsl(var(--card))`
                         : `linear-gradient(175deg, hsl(var(--card)) 50%, hsl(var(--${plan.color}) / 0.12) 100%)`,
                       boxShadow: isActive
                         ? `0 12px 48px -12px hsl(var(--${plan.color}) / 0.3)`
