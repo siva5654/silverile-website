@@ -258,47 +258,64 @@ const RegisterSection = () => {
             </div>
 
             {/* Stacked cards effect */}
-            <div className="relative pb-24" style={{ perspective: "1200px" }}>
+            <div className="relative pb-28" style={{ perspective: "1400px" }}>
               {/* Background cards (other plans stacked behind) */}
               {otherPlans.map((plan, i) => {
                 const Icon = plan.icon;
+                const offset = (i + 1) * 48;
+                const scaleVal = 1 - (i + 1) * 0.05;
                 return (
                   <motion.button
                     key={plan.id}
                     type="button"
                     onClick={() => setSelectedPlan(plan.id)}
-                    className="absolute inset-x-0 top-0 rounded-2xl border-2 overflow-hidden cursor-pointer"
+                    className="absolute inset-x-0 top-0 rounded-2xl overflow-hidden cursor-pointer group"
                     layout
                     animate={{
-                      y: (i + 1) * 40,
-                      scale: 1 - (i + 1) * 0.045,
-                      opacity: 0.8 - i * 0.15,
+                      y: offset,
+                      scale: scaleVal,
+                      rotateX: (i + 1) * 2,
                     }}
                     whileHover={{
-                      y: (i + 1) * 40 - 6,
-                      opacity: 0.95,
-                      transition: { duration: 0.2 },
+                      y: offset - 12,
+                      scale: scaleVal + 0.01,
+                      rotateX: 0,
+                      transition: { duration: 0.25 },
                     }}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    transition={{ type: "spring", stiffness: 280, damping: 24 }}
                     style={{
                       zIndex: -i - 1,
                       height: "100%",
-                      borderColor: `hsl(var(--${plan.color}) / 0.45)`,
-                      background: `linear-gradient(180deg, hsl(var(--card) / 0.97), hsl(var(--${plan.color}) / 0.12))`,
-                      boxShadow: `0 6px 24px -8px hsl(var(--${plan.color}) / 0.25)`,
+                      transformStyle: "preserve-3d",
+                      border: `2px solid hsl(var(--${plan.color}) / 0.5)`,
+                      background: `linear-gradient(175deg, hsl(var(--card)) 60%, hsl(var(--${plan.color}) / 0.15) 100%)`,
+                      boxShadow: `
+                        0 ${(i + 1) * 4}px ${(i + 1) * 16}px -4px hsl(var(--${plan.color}) / 0.2),
+                        inset 0 -1px 0 0 hsl(var(--${plan.color}) / 0.1)
+                      `,
                     }}
                   >
-                    {/* Plan name + price peeking at bottom */}
-                    <div className="absolute bottom-5 left-0 right-0 flex flex-col items-center gap-1 px-4">
-                      <div className="flex items-center gap-2">
-                        <Icon className="h-4 w-4" style={{ color: `hsl(var(--${plan.color}))` }} />
-                        <span className="text-sm font-bold" style={{ color: `hsl(var(--${plan.color}))` }}>
+                    {/* Colored top edge accent */}
+                    <div
+                      className="absolute top-0 left-4 right-4 h-[3px] rounded-b-full"
+                      style={{ background: `hsl(var(--${plan.color}) / 0.6)` }}
+                    />
+                    {/* Plan info peeking at bottom */}
+                    <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-3 px-6 transition-opacity group-hover:opacity-100">
+                      <div
+                        className="flex items-center gap-2 rounded-full px-4 py-1.5"
+                        style={{
+                          background: `hsl(var(--${plan.color}) / 0.1)`,
+                          border: `1px solid hsl(var(--${plan.color}) / 0.25)`,
+                        }}
+                      >
+                        <Icon className="h-3.5 w-3.5" style={{ color: `hsl(var(--${plan.color}))` }} />
+                        <span className="text-xs font-bold" style={{ color: `hsl(var(--${plan.color}))` }}>
                           {plan.name}
                         </span>
+                        <span className="text-[10px] text-muted-foreground">·</span>
+                        <span className="text-[10px] text-muted-foreground">{plan.cta[billing]}</span>
                       </div>
-                      <span className="text-xs text-muted-foreground">
-                        {plan.cta[billing]} · Click to select
-                      </span>
                     </div>
                   </motion.button>
                 );
