@@ -1,6 +1,6 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { User, Mail, Lock, Building2, Check, ArrowRight, Eye, EyeOff, Sparkles, Shield, Zap } from "lucide-react";
+import { User, Mail, Lock, Building2, Check, ArrowRight, Eye, EyeOff, Sparkles, Shield, Zap, Phone, IdCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -10,7 +10,9 @@ const registerSchema = z.object({
   firstName: z.string().trim().min(1, "First name is required").max(50, "Too long"),
   lastName: z.string().trim().min(1, "Last name is required").max(50, "Too long"),
   email: z.string().trim().email("Invalid email address").max(255, "Too long"),
+  phone: z.string().trim().max(20, "Too long").optional(),
   company: z.string().trim().max(100, "Too long").optional(),
+  userId: z.string().trim().min(3, "Min 3 characters").max(30, "Too long").regex(/^[a-zA-Z0-9_.-]+$/, "Only letters, numbers, dots, hyphens, underscores"),
   password: z.string().min(8, "Min 8 characters").max(128, "Too long"),
   confirmPassword: z.string(),
 }).refine((d) => d.password === d.confirmPassword, {
@@ -86,7 +88,9 @@ const RegisterSection = () => {
     firstName: "",
     lastName: "",
     email: "",
+    phone: "",
     company: "",
+    userId: "",
     password: "",
     confirmPassword: "",
   });
@@ -113,7 +117,7 @@ const RegisterSection = () => {
     setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
-      setForm({ firstName: "", lastName: "", email: "", company: "", password: "", confirmPassword: "" });
+      setForm({ firstName: "", lastName: "", email: "", phone: "", company: "", userId: "", password: "", confirmPassword: "" });
       toast({ title: "Account created!", description: `Welcome to Silverile ${selectedPlan === "free" ? "Free" : "Professional"} plan.` });
     }, 1500);
   };
@@ -321,6 +325,23 @@ const RegisterSection = () => {
                 {errors.email && <p className="mt-0.5 text-[10px] text-destructive">{errors.email}</p>}
               </div>
 
+              {/* Phone Number */}
+              <div>
+                <label className="mb-1 block text-xs font-medium text-foreground">Phone Number</label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                  <Input
+                    type="tel"
+                    placeholder="+1 (555) 000-0000"
+                    value={form.phone}
+                    onChange={(e) => handleChange("phone", e.target.value)}
+                    maxLength={20}
+                    style={{ paddingLeft: "2.25rem" }}
+                  />
+                </div>
+                {errors.phone && <p className="mt-0.5 text-[10px] text-destructive">{errors.phone}</p>}
+              </div>
+
               {/* Company */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">Company</label>
@@ -334,6 +355,24 @@ const RegisterSection = () => {
                     style={{ paddingLeft: "2.25rem" }}
                   />
                 </div>
+              </div>
+
+              {/* User ID */}
+              <div>
+                <label className="mb-1 block text-xs font-medium text-foreground">
+                  User ID <span className="text-destructive">*</span>
+                </label>
+                <div className="relative">
+                  <IdCard className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="your.username"
+                    value={form.userId}
+                    onChange={(e) => handleChange("userId", e.target.value)}
+                    maxLength={30}
+                    style={{ paddingLeft: "2.25rem" }}
+                  />
+                </div>
+                {errors.userId && <p className="mt-0.5 text-[10px] text-destructive">{errors.userId}</p>}
               </div>
 
               {/* Password */}
