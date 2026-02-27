@@ -258,31 +258,33 @@ const RegisterSection = () => {
             </div>
 
             {/* Stacked cards effect */}
-            <div className="relative" style={{ perspective: "1200px" }}>
+            <div className="relative pb-16" style={{ perspective: "1200px" }}>
               {/* Background cards (other plans stacked behind) */}
               {otherPlans.map((plan, i) => {
                 const Icon = plan.icon;
                 return (
                   <motion.div
                     key={plan.id}
-                    className="absolute inset-x-0 top-0 rounded-2xl border-2 backdrop-blur-sm overflow-hidden"
+                    className="absolute inset-x-0 top-0 rounded-2xl border-2 overflow-hidden"
+                    layout
                     animate={{
-                      y: (i + 1) * 14,
-                      scale: 1 - (i + 1) * 0.04,
-                      opacity: 0.6 - i * 0.2,
+                      y: (i + 1) * 28,
+                      scale: 1 - (i + 1) * 0.05,
+                      opacity: 0.7 - i * 0.2,
                     }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     style={{
                       zIndex: -i - 1,
                       height: "100%",
-                      borderColor: `hsl(var(--${plan.color}) / 0.25)`,
-                      background: `linear-gradient(135deg, hsl(var(--card) / 0.9), hsl(var(--${plan.color}) / 0.05))`,
+                      borderColor: `hsl(var(--${plan.color}) / 0.35)`,
+                      background: `linear-gradient(180deg, hsl(var(--card) / 0.95), hsl(var(--${plan.color}) / 0.08))`,
+                      boxShadow: `0 4px 20px -8px hsl(var(--${plan.color}) / 0.15)`,
                     }}
                   >
-                    {/* Mini header peek */}
-                    <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-2 px-4">
-                      <Icon className="h-3.5 w-3.5" style={{ color: `hsl(var(--${plan.color}) / 0.6)` }} />
-                      <span className="text-xs font-medium" style={{ color: `hsl(var(--${plan.color}) / 0.5)` }}>
+                    {/* Plan name peeking at bottom */}
+                    <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-2 px-4">
+                      <Icon className="h-4 w-4" style={{ color: `hsl(var(--${plan.color}) / 0.7)` }} />
+                      <span className="text-sm font-semibold" style={{ color: `hsl(var(--${plan.color}) / 0.6)` }}>
                         {plan.name}
                       </span>
                     </div>
