@@ -202,11 +202,154 @@ const RegisterSection = () => {
         </motion.div>
 
         <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-2 items-start">
-          {/* ─── Form — Left ─── */}
+          {/* ─── Plan Card — Left ─── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
+            className="flex flex-col gap-4"
+          >
+            {/* Plan Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="w-full flex items-center justify-between rounded-xl border border-border bg-card/80 backdrop-blur-sm px-4 py-3 text-sm font-medium text-foreground transition-all hover:border-primary/50"
+              >
+                <div className="flex items-center gap-2">
+                  <activePlan.icon className="h-4 w-4" style={{ color: `hsl(var(--${activePlan.color}))` }} />
+                  <span>{activePlan.name}</span>
+                </div>
+                <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 right-0 z-20 mt-1 rounded-xl border border-border bg-card shadow-lg backdrop-blur-xl overflow-hidden"
+                  >
+                    {plans.map((plan) => {
+                      const Icon = plan.icon;
+                      const isActive = plan.id === selectedPlan;
+                      return (
+                        <button
+                          key={plan.id}
+                          type="button"
+                          onClick={() => { setSelectedPlan(plan.id); setDropdownOpen(false); }}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary/50 text-left"
+                          style={{ background: isActive ? `hsl(var(--${plan.color}) / 0.08)` : undefined }}
+                        >
+                          <Icon className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${plan.color}))` }} />
+                          <div className="flex-1">
+                            <p className="font-medium text-foreground">{plan.name}</p>
+                            <p className="text-[11px] text-muted-foreground">{plan.cta[billing]}</p>
+                          </div>
+                          {isActive && <Check className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${plan.color}))` }} />}
+                        </button>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Stacked cards effect */}
+            <div className="relative" style={{ perspective: "1200px" }}>
+              {/* Background cards (other plans stacked behind) */}
+              {otherPlans.map((plan, i) => (
+                <motion.div
+                  key={plan.id}
+                  className="absolute inset-x-0 top-0 rounded-2xl border bg-card/40 backdrop-blur-sm"
+                  animate={{
+                    y: (i + 1) * 10,
+                    scale: 1 - (i + 1) * 0.035,
+                    opacity: 0.45 - i * 0.15,
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  style={{
+                    zIndex: -i - 1,
+                    height: "100%",
+                    borderColor: `hsl(var(--${plan.color}) / 0.15)`,
+                  }}
+                />
+              ))}
+
+              {/* Active plan card */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedPlan}
+                  initial={{ opacity: 0, rotateY: -8, x: -40, scale: 0.95 }}
+                  animate={{ opacity: 1, rotateY: 0, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotateY: 8, x: 40, scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 22, mass: 0.8 }}
+                  className="relative rounded-2xl border bg-card/80 backdrop-blur-sm p-8"
+                  style={{
+                    borderColor: `hsl(var(--${activePlan.color}) / 0.3)`,
+                    boxShadow: `0 8px 40px -12px hsl(var(--${activePlan.color}) / 0.25)`,
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  {activePlan.highlighted && (
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                      <span className="rounded-full px-4 py-1 text-xs font-bold text-primary-foreground" style={{ background: `hsl(var(--${activePlan.color}))` }}>
+                        Most Popular
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Icon + Name */}
+                  <div className="mb-6">
+                    <div className="mb-4 inline-flex rounded-xl p-2.5" style={{ background: `hsl(var(--${activePlan.color}) / 0.06)` }}>
+                      <activePlan.icon className="h-5 w-5" style={{ color: `hsl(var(--${activePlan.color}))` }} />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground">{activePlan.name}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">{activePlan.subtitle}</p>
+                  </div>
+
+                  {/* Price */}
+                  <div className="mb-6 pb-6 border-b border-border">
+                    <span className="text-3xl font-extrabold" style={{ color: `hsl(var(--${activePlan.color}))` }}>
+                      {activePlan.cta[billing]}
+                    </span>
+                  </div>
+
+                  {/* Features */}
+                  <ul className="space-y-3">
+                    {activePlan.features.map((f, fi) => (
+                      <motion.li
+                        key={f.label}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: fi * 0.03, duration: 0.25 }}
+                      >
+                        <div className="flex items-start gap-2.5 text-sm text-foreground/80">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: `hsl(var(--${activePlan.color}))` }} />
+                          <span className="font-medium">{f.label}</span>
+                        </div>
+                        {f.sub && (
+                          <ul className="ml-9 mt-1 space-y-1">
+                            {f.sub.map((s) => (
+                              <li key={s} className="text-xs text-muted-foreground">{s}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
+
+          {/* ─── Form — Right ─── */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.25 }}
           >
             <form
               onSubmit={handleSubmit}
@@ -318,138 +461,6 @@ const RegisterSection = () => {
                 <a href="#" className="font-medium text-primary hover:underline">Sign In</a>
               </p>
             </form>
-          </motion.div>
-
-          {/* ─── Plan Card — Right ─── */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="flex flex-col gap-4"
-          >
-            {/* Plan Dropdown */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="w-full flex items-center justify-between rounded-xl border border-border bg-card/80 backdrop-blur-sm px-4 py-3 text-sm font-medium text-foreground transition-all hover:border-primary/50"
-              >
-                <div className="flex items-center gap-2">
-                  <activePlan.icon className="h-4 w-4" style={{ color: `hsl(var(--${activePlan.color}))` }} />
-                  <span>{activePlan.name}</span>
-                </div>
-                <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-
-              <AnimatePresence>
-                {dropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 right-0 z-20 mt-1 rounded-xl border border-border bg-card shadow-lg backdrop-blur-xl overflow-hidden"
-                  >
-                    {plans.map((plan) => {
-                      const Icon = plan.icon;
-                      const isActive = plan.id === selectedPlan;
-                      return (
-                        <button
-                          key={plan.id}
-                          type="button"
-                          onClick={() => { setSelectedPlan(plan.id); setDropdownOpen(false); }}
-                          className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary/50 text-left"
-                          style={{ background: isActive ? `hsl(var(--${plan.color}) / 0.08)` : undefined }}
-                        >
-                          <Icon className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${plan.color}))` }} />
-                          <div className="flex-1">
-                            <p className="font-medium text-foreground">{plan.name}</p>
-                            <p className="text-[11px] text-muted-foreground">{plan.cta[billing]}</p>
-                          </div>
-                          {isActive && <Check className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${plan.color}))` }} />}
-                        </button>
-                      );
-                    })}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Stacked cards effect */}
-            <div className="relative">
-              {/* Background cards (other plans stacked behind) */}
-              {otherPlans.map((plan, i) => (
-                <div
-                  key={plan.id}
-                  className="absolute inset-x-0 top-0 rounded-2xl border border-border bg-card/40 backdrop-blur-sm"
-                  style={{
-                    transform: `translateY(${(i + 1) * 8}px) scale(${1 - (i + 1) * 0.03})`,
-                    zIndex: -i - 1,
-                    height: "100%",
-                    opacity: 0.5 - i * 0.2,
-                  }}
-                />
-              ))}
-
-              {/* Active plan card */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={selectedPlan}
-                  initial={{ opacity: 0, y: 20, scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.97 }}
-                  transition={{ duration: 0.35, ease: "easeInOut" }}
-                  className="relative rounded-2xl border bg-card/80 backdrop-blur-sm p-8 transition-all"
-                  style={{
-                    borderColor: `hsl(var(--${activePlan.color}) / 0.3)`,
-                    boxShadow: `0 8px 40px -12px hsl(var(--${activePlan.color}) / 0.25)`,
-                  }}
-                >
-                  {activePlan.highlighted && (
-                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                      <span className="rounded-full px-4 py-1 text-xs font-bold text-primary-foreground" style={{ background: `hsl(var(--${activePlan.color}))` }}>
-                        Most Popular
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Icon + Name */}
-                  <div className="mb-6">
-                    <div className="mb-4 inline-flex rounded-xl p-2.5" style={{ background: `hsl(var(--${activePlan.color}) / 0.06)` }}>
-                      <activePlan.icon className="h-5 w-5" style={{ color: `hsl(var(--${activePlan.color}))` }} />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground">{activePlan.name}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{activePlan.subtitle}</p>
-                  </div>
-
-                  {/* Price */}
-                  <div className="mb-6 pb-6 border-b border-border">
-                    <span className="text-3xl font-extrabold" style={{ color: `hsl(var(--${activePlan.color}))` }}>
-                      {activePlan.cta[billing]}
-                    </span>
-                  </div>
-
-                  {/* Features */}
-                  <ul className="space-y-3">
-                    {activePlan.features.map((f) => (
-                      <li key={f.label}>
-                        <div className="flex items-start gap-2.5 text-sm text-foreground/80">
-                          <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: `hsl(var(--${activePlan.color}))` }} />
-                          <span className="font-medium">{f.label}</span>
-                        </div>
-                        {f.sub && (
-                          <ul className="ml-9 mt-1 space-y-1">
-                            {f.sub.map((s) => (
-                              <li key={s} className="text-xs text-muted-foreground">{s}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              </AnimatePresence>
-            </div>
           </motion.div>
         </div>
       </div>
