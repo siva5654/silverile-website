@@ -386,17 +386,17 @@ const RegisterSection = () => {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="mb-1 block text-xs font-medium text-foreground">First Name <span className="text-destructive">*</span></label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                    <Input placeholder="First" value={form.firstName} onChange={(e) => handleChange("firstName", e.target.value)} maxLength={50} style={{ paddingLeft: "2.25rem" }} />
+                  <div className="relative flex items-center">
+                    <User className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+                    <Input placeholder="First" value={form.firstName} onChange={(e) => handleChange("firstName", e.target.value)} maxLength={50} style={{ paddingLeft: "2.5rem" }} />
                   </div>
                   {errors.firstName && <p className="mt-0.5 text-[10px] text-destructive">{errors.firstName}</p>}
                 </div>
                 <div>
                   <label className="mb-1 block text-xs font-medium text-foreground">Last Name <span className="text-destructive">*</span></label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                    <Input placeholder="Last" value={form.lastName} onChange={(e) => handleChange("lastName", e.target.value)} maxLength={50} style={{ paddingLeft: "2.25rem" }} />
+                  <div className="relative flex items-center">
+                    <User className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+                    <Input placeholder="Last" value={form.lastName} onChange={(e) => handleChange("lastName", e.target.value)} maxLength={50} style={{ paddingLeft: "2.5rem" }} />
                   </div>
                   {errors.lastName && <p className="mt-0.5 text-[10px] text-destructive">{errors.lastName}</p>}
                 </div>
@@ -405,9 +405,9 @@ const RegisterSection = () => {
               {/* Email */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">Work Email <span className="text-destructive">*</span></label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input type="email" placeholder="you@company.com" value={form.email} onChange={(e) => handleChange("email", e.target.value)} maxLength={255} style={{ paddingLeft: "2.25rem" }} />
+                <div className="relative flex items-center">
+                  <Mail className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+                  <Input type="email" placeholder="you@company.com" value={form.email} onChange={(e) => handleChange("email", e.target.value)} maxLength={255} style={{ paddingLeft: "2.5rem" }} />
                 </div>
                 {errors.email && <p className="mt-0.5 text-[10px] text-destructive">{errors.email}</p>}
               </div>
@@ -415,9 +415,9 @@ const RegisterSection = () => {
               {/* Phone */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">Phone Number</label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input type="tel" placeholder="+1 (555) 000-0000" value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} maxLength={20} style={{ paddingLeft: "2.25rem" }} />
+                <div className="relative flex items-center">
+                  <Phone className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+                  <Input type="tel" placeholder="+1 (555) 000-0000" value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} maxLength={20} style={{ paddingLeft: "2.5rem" }} />
                 </div>
                 {errors.phone && <p className="mt-0.5 text-[10px] text-destructive">{errors.phone}</p>}
               </div>
@@ -425,18 +425,18 @@ const RegisterSection = () => {
               {/* Company */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">Company</label>
-                <div className="relative">
-                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input placeholder="Your company" value={form.company} onChange={(e) => handleChange("company", e.target.value)} maxLength={100} style={{ paddingLeft: "2.25rem" }} />
+                <div className="relative flex items-center">
+                  <Building2 className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="Your company" value={form.company} onChange={(e) => handleChange("company", e.target.value)} maxLength={100} style={{ paddingLeft: "2.5rem" }} />
                 </div>
               </div>
 
               {/* User ID */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">User ID <span className="text-destructive">*</span></label>
-                <div className="relative">
-                  <IdCard className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input placeholder="your.username" value={form.userId} onChange={(e) => handleChange("userId", e.target.value)} maxLength={30} style={{ paddingLeft: "2.25rem" }} />
+                <div className="relative flex items-center">
+                  <IdCard className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="your.username" value={form.userId} onChange={(e) => handleChange("userId", e.target.value)} maxLength={30} style={{ paddingLeft: "2.5rem" }} />
                 </div>
                 {errors.userId && <p className="mt-0.5 text-[10px] text-destructive">{errors.userId}</p>}
               </div>
@@ -444,11 +444,11 @@ const RegisterSection = () => {
               {/* Password */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">Password <span className="text-destructive">*</span></label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input type={showPassword ? "text" : "password"} placeholder="Min 8 characters" value={form.password} onChange={(e) => handleChange("password", e.target.value)} maxLength={128} style={{ paddingLeft: "2.25rem", paddingRight: "2.5rem" }} />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                    {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                <div className="relative flex items-center">
+                  <Lock className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+                  <Input type={showPassword ? "text" : "password"} placeholder="Min 8 characters" value={form.password} onChange={(e) => handleChange("password", e.target.value)} maxLength={128} style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-muted-foreground hover:text-foreground">
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
                 {errors.password && <p className="mt-0.5 text-[10px] text-destructive">{errors.password}</p>}
@@ -457,11 +457,11 @@ const RegisterSection = () => {
               {/* Confirm Password */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">Confirm Password <span className="text-destructive">*</span></label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input type={showConfirm ? "text" : "password"} placeholder="Re-enter password" value={form.confirmPassword} onChange={(e) => handleChange("confirmPassword", e.target.value)} maxLength={128} style={{ paddingLeft: "2.25rem", paddingRight: "2.5rem" }} />
-                  <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                    {showConfirm ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                <div className="relative flex items-center">
+                  <Lock className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+                  <Input type={showConfirm ? "text" : "password"} placeholder="Re-enter password" value={form.confirmPassword} onChange={(e) => handleChange("confirmPassword", e.target.value)} maxLength={128} style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }} />
+                  <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 text-muted-foreground hover:text-foreground">
+                    {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
                 {errors.confirmPassword && <p className="mt-0.5 text-[10px] text-destructive">{errors.confirmPassword}</p>}
