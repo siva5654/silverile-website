@@ -260,23 +260,35 @@ const RegisterSection = () => {
             {/* Stacked cards effect */}
             <div className="relative" style={{ perspective: "1200px" }}>
               {/* Background cards (other plans stacked behind) */}
-              {otherPlans.map((plan, i) => (
-                <motion.div
-                  key={plan.id}
-                  className="absolute inset-x-0 top-0 rounded-2xl border bg-card/40 backdrop-blur-sm"
-                  animate={{
-                    y: (i + 1) * 10,
-                    scale: 1 - (i + 1) * 0.035,
-                    opacity: 0.45 - i * 0.15,
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  style={{
-                    zIndex: -i - 1,
-                    height: "100%",
-                    borderColor: `hsl(var(--${plan.color}) / 0.15)`,
-                  }}
-                />
-              ))}
+              {otherPlans.map((plan, i) => {
+                const Icon = plan.icon;
+                return (
+                  <motion.div
+                    key={plan.id}
+                    className="absolute inset-x-0 top-0 rounded-2xl border-2 backdrop-blur-sm overflow-hidden"
+                    animate={{
+                      y: (i + 1) * 14,
+                      scale: 1 - (i + 1) * 0.04,
+                      opacity: 0.6 - i * 0.2,
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    style={{
+                      zIndex: -i - 1,
+                      height: "100%",
+                      borderColor: `hsl(var(--${plan.color}) / 0.25)`,
+                      background: `linear-gradient(135deg, hsl(var(--card) / 0.9), hsl(var(--${plan.color}) / 0.05))`,
+                    }}
+                  >
+                    {/* Mini header peek */}
+                    <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-2 px-4">
+                      <Icon className="h-3.5 w-3.5" style={{ color: `hsl(var(--${plan.color}) / 0.6)` }} />
+                      <span className="text-xs font-medium" style={{ color: `hsl(var(--${plan.color}) / 0.5)` }}>
+                        {plan.name}
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
 
               {/* Active plan card */}
               <AnimatePresence mode="wait">
