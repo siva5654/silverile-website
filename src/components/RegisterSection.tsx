@@ -394,7 +394,10 @@ const RegisterSection = () => {
                 </div>
                 <div>
                   <label className="mb-1 block text-xs font-medium text-foreground">Last Name <span className="text-destructive">*</span></label>
-                  <Input placeholder="Last" value={form.lastName} onChange={(e) => handleChange("lastName", e.target.value)} maxLength={50} />
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                    <Input placeholder="Last" value={form.lastName} onChange={(e) => handleChange("lastName", e.target.value)} maxLength={50} style={{ paddingLeft: "2.25rem" }} />
+                  </div>
                   {errors.lastName && <p className="mt-0.5 text-[10px] text-destructive">{errors.lastName}</p>}
                 </div>
               </div>
