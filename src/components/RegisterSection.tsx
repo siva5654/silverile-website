@@ -1,11 +1,16 @@
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { User, Mail, Lock, Building2, Check, ArrowRight, Eye, EyeOff, Sparkles, Shield, Zap, Phone, IdCard } from "lucide-react";
+import { useInView } from "framer-motion";
+import {
+  User, Mail, Lock, Building2, Check, ArrowRight, Eye, EyeOff,
+  Sparkles, Shield, Zap, Phone, IdCard, ChevronDown,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
+/* ─── Schema ─── */
 const registerSchema = z.object({
   firstName: z.string().trim().min(1, "First name is required").max(50, "Too long"),
   lastName: z.string().trim().min(1, "Last name is required").max(50, "Too long"),
@@ -22,80 +27,102 @@ const registerSchema = z.object({
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
-const plans = [
+/* ─── Plan data (matching Pricing section) ─── */
+type Feature = { label: string; sub?: string[] };
+type BillingCycle = "monthly" | "yearly";
+
+interface PlanData {
+  id: string;
+  name: string;
+  subtitle: string;
+  icon: typeof Zap;
+  color: string;
+  features: Feature[];
+  cta: Record<BillingCycle, string>;
+  highlighted: boolean;
+}
+
+const plans: PlanData[] = [
   {
     id: "free",
-    name: "Silverile - Free",
-    tagline: "(Ag)ile for All – Time gAIned",
-    price: "Free",
-    priceSub: "for 10 Users",
-    color: "intent",
-    icon: Sparkles,
+    name: "Silverile - Free plan",
+    subtitle: "(Ag)ile for All, Time gAIned",
+    icon: Zap,
+    color: "execution",
     features: [
-      "Agentic Project Management",
-      "StoryCraft-AI (Text & Images)",
-      "Monty's Views (Org, Scrum, Kanban, Timeline)",
-      "Release & Time Management",
-      "Silverile Virtual Huddle",
-      "5,000 AI tokens/user/month",
-      "10 Projects · 200 Stories/Project",
+      { label: "Agentic Project management" },
+      { label: "StoryCraft-AI", sub: ["Generate Stories from Text", "Generate Stories from Images"] },
+      { label: "Monty's Views", sub: ["Organization View", "Scrum View", "Kanban View", "Timeline View"] },
+      { label: "Release Management" },
+      { label: "Time Management" },
+      { label: "Silverile Virtual Huddle" },
+      { label: "5,000 AI tokens per user per month" },
+      { label: "10 Projects" },
+      { label: "200 Stories per Project" },
     ],
+    cta: { monthly: "Free for 10 Users", yearly: "Free for 10 Users" },
+    highlighted: false,
   },
   {
     id: "professional",
     name: "Silverile - Professional",
-    tagline: "(Ag)ile for All – Time gAIned",
-    price: "$7.00",
-    priceSub: "per User / Month",
-    color: "execution",
-    icon: Zap,
-    popular: true,
+    subtitle: "(Ag)ile for All, Time gAIned",
+    icon: Sparkles,
+    color: "intent",
     features: [
-      "Everything in Free, plus:",
-      "Agile View",
-      "Compendium – Document Repository",
-      "20,000 AI tokens/user/month",
-      "Unlimited Projects",
-      "Unlimited Stories",
+      { label: "Agentic Project management" },
+      { label: "StoryCraft-AI", sub: ["Generate Stories from Text", "Generate Stories from Images"] },
+      { label: "Monty's Views", sub: ["Agile View", "Organization View", "Scrum View", "Kanban View", "Timeline View"] },
+      { label: "Release Management" },
+      { label: "Time Management" },
+      { label: "Compendium - Your document repository" },
+      { label: "Silverile Virtual Huddle" },
+      { label: "20,000 AI tokens per user per month" },
+      { label: "Unlimited Projects" },
+      { label: "Unlimited Stories" },
     ],
+    cta: { monthly: "$7.00 per User per Month", yearly: "$75.00 per User per Year" },
+    highlighted: true,
   },
   {
     id: "enterprise",
     name: "Enterprise",
-    tagline: "For more than 500 Users",
-    price: "Custom",
-    priceSub: "Contact Us",
+    subtitle: "For more than 500 Users",
+    icon: Building2,
     color: "validation",
-    icon: Shield,
     features: [
-      "Everything in Professional, plus:",
-      "Dedicated support",
-      "Custom integrations",
-      "SLA guarantees",
+      { label: "Everything in Professional" },
+      { label: "Dedicated Account Manager" },
+      { label: "Custom Integrations & API Access" },
+      { label: "Advanced Analytics & Reporting" },
+      { label: "Priority 24/7 Support with SLA" },
+      { label: "SSO & Advanced Security" },
+      { label: "Custom AI token limits" },
+      { label: "On-premise deployment options" },
     ],
+    cta: { monthly: "Contact Us", yearly: "Contact Us" },
+    highlighted: false,
   },
 ];
 
+/* ─── Component ─── */
 const RegisterSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
   const { toast } = useToast();
-  const [selectedPlan, setSelectedPlan] = useState("free");
-  const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+  const [selectedPlan, setSelectedPlan] = useState("professional");
+  const [billing, setBilling] = useState<BillingCycle>("monthly");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [form, setForm] = useState<RegisterForm>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    company: "",
-    userId: "",
-    password: "",
-    confirmPassword: "",
+    firstName: "", lastName: "", email: "", phone: "", company: "", userId: "", password: "", confirmPassword: "",
   });
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterForm, string>>>({});
   const [submitting, setSubmitting] = useState(false);
+
+  const activePlan = plans.find((p) => p.id === selectedPlan)!;
+  const otherPlans = plans.filter((p) => p.id !== selectedPlan);
 
   const handleChange = (field: keyof RegisterForm, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -118,7 +145,7 @@ const RegisterSection = () => {
     setTimeout(() => {
       setSubmitting(false);
       setForm({ firstName: "", lastName: "", email: "", phone: "", company: "", userId: "", password: "", confirmPassword: "" });
-      toast({ title: "Account created!", description: `Welcome to Silverile ${selectedPlan === "free" ? "Free" : "Professional"} plan.` });
+      toast({ title: "Account created!", description: `Welcome to ${activePlan.name}.` });
     }, 1500);
   };
 
@@ -166,7 +193,7 @@ const RegisterSection = () => {
                 {b === "monthly" ? "Monthly" : "Yearly"}
                 {b === "yearly" && (
                   <span className="ml-1.5 text-[10px] font-bold" style={{ color: billing === b ? "hsl(var(--primary-foreground))" : "hsl(var(--validation))" }}>
-                    Save 20%
+                    Save ~11%
                   </span>
                 )}
               </button>
@@ -174,97 +201,12 @@ const RegisterSection = () => {
           </div>
         </motion.div>
 
-        <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-5 items-center">
-          {/* Plans — Left (3 cols) */}
+        <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-2 items-start">
+          {/* ─── Form — Left ─── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-3 grid gap-4 sm:grid-cols-3 items-stretch"
-          >
-            {plans.map((plan, i) => {
-              const isSelected = selectedPlan === plan.id;
-              const Icon = plan.icon;
-              return (
-                <motion.button
-                  key={plan.id}
-                  type="button"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.15 + i * 0.1 }}
-                  onClick={() => setSelectedPlan(plan.id)}
-                  className="relative rounded-2xl border text-left p-5 transition-all"
-                  style={{
-                    borderColor: isSelected ? `hsl(var(--${plan.color}))` : "hsl(var(--border))",
-                    background: isSelected ? `hsl(var(--${plan.color}) / 0.04)` : "hsl(var(--card) / 0.8)",
-                    boxShadow: isSelected ? `0 0 30px -10px hsl(var(--${plan.color}) / 0.25)` : "none",
-                  }}
-                >
-                  {plan.popular && (
-                    <span
-                      className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider"
-                      style={{
-                        background: `hsl(var(--${plan.color}))`,
-                        color: "hsl(var(--primary-foreground))",
-                      }}
-                    >
-                      Popular
-                    </span>
-                  )}
-
-                  {/* Check indicator */}
-                  <div
-                    className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full transition-all"
-                    style={{
-                      background: isSelected ? `hsl(var(--${plan.color}))` : "hsl(var(--muted))",
-                      border: isSelected ? "none" : "1px solid hsl(var(--border))",
-                    }}
-                  >
-                    {isSelected && <Check className="h-3 w-3" style={{ color: "hsl(var(--primary-foreground))" }} />}
-                  </div>
-
-                  <div
-                    className="flex h-9 w-9 items-center justify-center rounded-xl mb-3"
-                    style={{ background: `hsl(var(--${plan.color}) / 0.12)` }}
-                  >
-                    <Icon className="h-4 w-4" style={{ color: `hsl(var(--${plan.color}))` }} />
-                  </div>
-
-                  <h3 className="text-sm font-bold text-foreground">{plan.name}</h3>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{plan.tagline}</p>
-
-                  <div className="mt-3 mb-3 border-t border-border" />
-
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-xl font-extrabold" style={{ color: `hsl(var(--${plan.color}))` }}>
-                      {plan.price === "Free" || plan.price === "Custom"
-                        ? plan.price
-                        : billing === "yearly"
-                          ? "$5.60"
-                          : plan.price}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground">{plan.priceSub}</span>
-                  </div>
-
-                  <ul className="mt-3 space-y-1.5">
-                    {plan.features.map((f) => (
-                      <li key={f} className="flex items-start gap-1.5 text-[11px] text-muted-foreground leading-tight">
-                        <Check className="h-3 w-3 mt-0.5 shrink-0" style={{ color: `hsl(var(--${plan.color}))` }} />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.button>
-              );
-            })}
-          </motion.div>
-
-          {/* Form — Right (2 cols) */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="lg:col-span-2"
           >
             <form
               onSubmit={handleSubmit}
@@ -277,67 +219,36 @@ const RegisterSection = () => {
               {/* First & Last Name */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block text-xs font-medium text-foreground">
-                    First Name <span className="text-destructive">*</span>
-                  </label>
+                  <label className="mb-1 block text-xs font-medium text-foreground">First Name <span className="text-destructive">*</span></label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                    <Input
-                      placeholder="First"
-                      value={form.firstName}
-                      onChange={(e) => handleChange("firstName", e.target.value)}
-                      maxLength={50}
-                      style={{ paddingLeft: "2.25rem" }}
-                    />
+                    <Input placeholder="First" value={form.firstName} onChange={(e) => handleChange("firstName", e.target.value)} maxLength={50} style={{ paddingLeft: "2.25rem" }} />
                   </div>
                   {errors.firstName && <p className="mt-0.5 text-[10px] text-destructive">{errors.firstName}</p>}
                 </div>
                 <div>
-                  <label className="mb-1 block text-xs font-medium text-foreground">
-                    Last Name <span className="text-destructive">*</span>
-                  </label>
-                  <Input
-                    placeholder="Last"
-                    value={form.lastName}
-                    onChange={(e) => handleChange("lastName", e.target.value)}
-                    maxLength={50}
-                  />
+                  <label className="mb-1 block text-xs font-medium text-foreground">Last Name <span className="text-destructive">*</span></label>
+                  <Input placeholder="Last" value={form.lastName} onChange={(e) => handleChange("lastName", e.target.value)} maxLength={50} />
                   {errors.lastName && <p className="mt-0.5 text-[10px] text-destructive">{errors.lastName}</p>}
                 </div>
               </div>
 
               {/* Email */}
               <div>
-                <label className="mb-1 block text-xs font-medium text-foreground">
-                  Work Email <span className="text-destructive">*</span>
-                </label>
+                <label className="mb-1 block text-xs font-medium text-foreground">Work Email <span className="text-destructive">*</span></label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input
-                    type="email"
-                    placeholder="you@company.com"
-                    value={form.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    maxLength={255}
-                    style={{ paddingLeft: "2.25rem" }}
-                  />
+                  <Input type="email" placeholder="you@company.com" value={form.email} onChange={(e) => handleChange("email", e.target.value)} maxLength={255} style={{ paddingLeft: "2.25rem" }} />
                 </div>
                 {errors.email && <p className="mt-0.5 text-[10px] text-destructive">{errors.email}</p>}
               </div>
 
-              {/* Phone Number */}
+              {/* Phone */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">Phone Number</label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input
-                    type="tel"
-                    placeholder="+1 (555) 000-0000"
-                    value={form.phone}
-                    onChange={(e) => handleChange("phone", e.target.value)}
-                    maxLength={20}
-                    style={{ paddingLeft: "2.25rem" }}
-                  />
+                  <Input type="tel" placeholder="+1 (555) 000-0000" value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} maxLength={20} style={{ paddingLeft: "2.25rem" }} />
                 </div>
                 {errors.phone && <p className="mt-0.5 text-[10px] text-destructive">{errors.phone}</p>}
               </div>
@@ -347,54 +258,27 @@ const RegisterSection = () => {
                 <label className="mb-1 block text-xs font-medium text-foreground">Company</label>
                 <div className="relative">
                   <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input
-                    placeholder="Your company"
-                    value={form.company}
-                    onChange={(e) => handleChange("company", e.target.value)}
-                    maxLength={100}
-                    style={{ paddingLeft: "2.25rem" }}
-                  />
+                  <Input placeholder="Your company" value={form.company} onChange={(e) => handleChange("company", e.target.value)} maxLength={100} style={{ paddingLeft: "2.25rem" }} />
                 </div>
               </div>
 
               {/* User ID */}
               <div>
-                <label className="mb-1 block text-xs font-medium text-foreground">
-                  User ID <span className="text-destructive">*</span>
-                </label>
+                <label className="mb-1 block text-xs font-medium text-foreground">User ID <span className="text-destructive">*</span></label>
                 <div className="relative">
                   <IdCard className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input
-                    placeholder="your.username"
-                    value={form.userId}
-                    onChange={(e) => handleChange("userId", e.target.value)}
-                    maxLength={30}
-                    style={{ paddingLeft: "2.25rem" }}
-                  />
+                  <Input placeholder="your.username" value={form.userId} onChange={(e) => handleChange("userId", e.target.value)} maxLength={30} style={{ paddingLeft: "2.25rem" }} />
                 </div>
                 {errors.userId && <p className="mt-0.5 text-[10px] text-destructive">{errors.userId}</p>}
               </div>
 
               {/* Password */}
               <div>
-                <label className="mb-1 block text-xs font-medium text-foreground">
-                  Password <span className="text-destructive">*</span>
-                </label>
+                <label className="mb-1 block text-xs font-medium text-foreground">Password <span className="text-destructive">*</span></label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Min 8 characters"
-                    value={form.password}
-                    onChange={(e) => handleChange("password", e.target.value)}
-                    maxLength={128}
-                    style={{ paddingLeft: "2.25rem", paddingRight: "2.5rem" }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  >
+                  <Input type={showPassword ? "text" : "password"} placeholder="Min 8 characters" value={form.password} onChange={(e) => handleChange("password", e.target.value)} maxLength={128} style={{ paddingLeft: "2.25rem", paddingRight: "2.5rem" }} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                     {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                   </button>
                 </div>
@@ -403,57 +287,16 @@ const RegisterSection = () => {
 
               {/* Confirm Password */}
               <div>
-                <label className="mb-1 block text-xs font-medium text-foreground">
-                  Confirm Password <span className="text-destructive">*</span>
-                </label>
+                <label className="mb-1 block text-xs font-medium text-foreground">Confirm Password <span className="text-destructive">*</span></label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input
-                    type={showConfirm ? "text" : "password"}
-                    placeholder="Re-enter password"
-                    value={form.confirmPassword}
-                    onChange={(e) => handleChange("confirmPassword", e.target.value)}
-                    maxLength={128}
-                    style={{ paddingLeft: "2.25rem", paddingRight: "2.5rem" }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirm(!showConfirm)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  >
+                  <Input type={showConfirm ? "text" : "password"} placeholder="Re-enter password" value={form.confirmPassword} onChange={(e) => handleChange("confirmPassword", e.target.value)} maxLength={128} style={{ paddingLeft: "2.25rem", paddingRight: "2.5rem" }} />
+                  <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                     {showConfirm ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                   </button>
                 </div>
                 {errors.confirmPassword && <p className="mt-0.5 text-[10px] text-destructive">{errors.confirmPassword}</p>}
               </div>
-
-              {/* Selected plan indicator */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={selectedPlan}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.2 }}
-                  className="rounded-xl border border-border p-3 flex items-center gap-3"
-                  style={{
-                    background: `hsl(var(--${plans.find((p) => p.id === selectedPlan)!.color}) / 0.06)`,
-                    borderColor: `hsl(var(--${plans.find((p) => p.id === selectedPlan)!.color}) / 0.3)`,
-                  }}
-                >
-                  <Check className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${plans.find((p) => p.id === selectedPlan)!.color}))` }} />
-                  <div>
-                    <p className="text-xs font-semibold text-foreground">
-                      {plans.find((p) => p.id === selectedPlan)!.name}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground">
-                      {plans.find((p) => p.id === selectedPlan)!.price === "Custom"
-                        ? "Contact us for pricing"
-                        : `${plans.find((p) => p.id === selectedPlan)!.price} ${plans.find((p) => p.id === selectedPlan)!.priceSub}`}
-                    </p>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
 
               <Button
                 type="submit"
@@ -461,24 +304,152 @@ const RegisterSection = () => {
                 disabled={submitting || selectedPlan === "enterprise"}
                 className="w-full"
                 style={{
-                  background: `hsl(var(--${plans.find((p) => p.id === selectedPlan)!.color}))`,
+                  background: `hsl(var(--${activePlan.color}))`,
                   color: "hsl(var(--primary-foreground))",
                 }}
               >
                 {submitting ? "Creating Account..." : selectedPlan === "enterprise" ? "Contact Us Instead" : (
-                  <>
-                    Create Account <ArrowRight className="ml-2 h-4 w-4" />
-                  </>
+                  <>Create Account <ArrowRight className="ml-2 h-4 w-4" /></>
                 )}
               </Button>
 
               <p className="text-center text-[10px] text-muted-foreground">
                 Already have an account?{" "}
-                <a href="#" className="font-medium text-primary hover:underline">
-                  Sign In
-                </a>
+                <a href="#" className="font-medium text-primary hover:underline">Sign In</a>
               </p>
             </form>
+          </motion.div>
+
+          {/* ─── Plan Card — Right ─── */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="flex flex-col gap-4"
+          >
+            {/* Plan Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="w-full flex items-center justify-between rounded-xl border border-border bg-card/80 backdrop-blur-sm px-4 py-3 text-sm font-medium text-foreground transition-all hover:border-primary/50"
+              >
+                <div className="flex items-center gap-2">
+                  <activePlan.icon className="h-4 w-4" style={{ color: `hsl(var(--${activePlan.color}))` }} />
+                  <span>{activePlan.name}</span>
+                </div>
+                <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 right-0 z-20 mt-1 rounded-xl border border-border bg-card shadow-lg backdrop-blur-xl overflow-hidden"
+                  >
+                    {plans.map((plan) => {
+                      const Icon = plan.icon;
+                      const isActive = plan.id === selectedPlan;
+                      return (
+                        <button
+                          key={plan.id}
+                          type="button"
+                          onClick={() => { setSelectedPlan(plan.id); setDropdownOpen(false); }}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary/50 text-left"
+                          style={{ background: isActive ? `hsl(var(--${plan.color}) / 0.08)` : undefined }}
+                        >
+                          <Icon className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${plan.color}))` }} />
+                          <div className="flex-1">
+                            <p className="font-medium text-foreground">{plan.name}</p>
+                            <p className="text-[11px] text-muted-foreground">{plan.cta[billing]}</p>
+                          </div>
+                          {isActive && <Check className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${plan.color}))` }} />}
+                        </button>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Stacked cards effect */}
+            <div className="relative">
+              {/* Background cards (other plans stacked behind) */}
+              {otherPlans.map((plan, i) => (
+                <div
+                  key={plan.id}
+                  className="absolute inset-x-0 top-0 rounded-2xl border border-border bg-card/40 backdrop-blur-sm"
+                  style={{
+                    transform: `translateY(${(i + 1) * 8}px) scale(${1 - (i + 1) * 0.03})`,
+                    zIndex: -i - 1,
+                    height: "100%",
+                    opacity: 0.5 - i * 0.2,
+                  }}
+                />
+              ))}
+
+              {/* Active plan card */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedPlan}
+                  initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.97 }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  className="relative rounded-2xl border bg-card/80 backdrop-blur-sm p-8 transition-all"
+                  style={{
+                    borderColor: `hsl(var(--${activePlan.color}) / 0.3)`,
+                    boxShadow: `0 8px 40px -12px hsl(var(--${activePlan.color}) / 0.25)`,
+                  }}
+                >
+                  {activePlan.highlighted && (
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                      <span className="rounded-full px-4 py-1 text-xs font-bold text-primary-foreground" style={{ background: `hsl(var(--${activePlan.color}))` }}>
+                        Most Popular
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Icon + Name */}
+                  <div className="mb-6">
+                    <div className="mb-4 inline-flex rounded-xl p-2.5" style={{ background: `hsl(var(--${activePlan.color}) / 0.06)` }}>
+                      <activePlan.icon className="h-5 w-5" style={{ color: `hsl(var(--${activePlan.color}))` }} />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground">{activePlan.name}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">{activePlan.subtitle}</p>
+                  </div>
+
+                  {/* Price */}
+                  <div className="mb-6 pb-6 border-b border-border">
+                    <span className="text-3xl font-extrabold" style={{ color: `hsl(var(--${activePlan.color}))` }}>
+                      {activePlan.cta[billing]}
+                    </span>
+                  </div>
+
+                  {/* Features */}
+                  <ul className="space-y-3">
+                    {activePlan.features.map((f) => (
+                      <li key={f.label}>
+                        <div className="flex items-start gap-2.5 text-sm text-foreground/80">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: `hsl(var(--${activePlan.color}))` }} />
+                          <span className="font-medium">{f.label}</span>
+                        </div>
+                        {f.sub && (
+                          <ul className="ml-9 mt-1 space-y-1">
+                            {f.sub.map((s) => (
+                              <li key={s} className="text-xs text-muted-foreground">{s}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </motion.div>
         </div>
       </div>
