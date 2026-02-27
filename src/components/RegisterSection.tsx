@@ -278,13 +278,14 @@ const RegisterSection = () => {
                     key={plan.id}
                     type="button"
                     onClick={() => !isActive && setSelectedPlan(plan.id)}
-                    className={`rounded-2xl border-2 overflow-hidden ${isActive ? "" : "cursor-pointer"}`}
+                    className={`rounded-2xl border-2 overflow-hidden ${isActive ? "" : "cursor-pointer backdrop-blur-[2px]"}`}
                     animate={{
                       rotate,
                       x: xShift,
                       y: yShift,
                       scale: cardScale,
                       opacity: isActive ? 1 : 0.75,
+                      filter: isActive ? "blur(0px)" : "blur(3px)",
                     }}
                     whileHover={!isActive ? {
                       scale: 0.92,
