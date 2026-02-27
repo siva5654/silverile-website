@@ -201,7 +201,7 @@ const RegisterSection = () => {
           </div>
         </motion.div>
 
-        <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-2 items-start">
+        <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-2 items-center">
           {/* ─── Plan Card — Left ─── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -258,20 +258,19 @@ const RegisterSection = () => {
             </div>
 
             {/* Fan-spread cards */}
-            <div className="relative flex items-center justify-center" style={{ minHeight: 520 }}>
+            <div className="relative flex items-center justify-center py-6 overflow-hidden" style={{ minHeight: 560 }}>
               {plans.map((plan) => {
                 const Icon = plan.icon;
                 const isActive = plan.id === selectedPlan;
                 const activeIdx = plans.findIndex((p) => p.id === selectedPlan);
                 const planIdx = plans.indexOf(plan);
-                const offset = planIdx - activeIdx; // -1, 0, or 1 (could be -2, 2 for 3 cards)
+                const offset = planIdx - activeIdx;
 
-                // Fan rotation and position
-                const rotate = isActive ? 0 : offset * 12;
-                const xShift = isActive ? 0 : offset * 60;
-                const yShift = isActive ? 0 : Math.abs(offset) * 30;
+                // Pure rotation fan from bottom center — no x-shift
+                const rotate = isActive ? 0 : offset * 10;
+                const yShift = isActive ? 0 : 8;
                 const zIndex = isActive ? 10 : 5 - Math.abs(offset);
-                const cardScale = isActive ? 1 : 0.88;
+                const cardScale = isActive ? 1 : 0.92;
 
                 return (
                   <motion.button
@@ -281,22 +280,22 @@ const RegisterSection = () => {
                     className={`rounded-2xl border-2 overflow-hidden ${isActive ? "" : "cursor-pointer backdrop-blur-[2px]"}`}
                     animate={{
                       rotate,
-                      x: xShift,
+                      x: 0,
                       y: yShift,
                       scale: cardScale,
                       opacity: isActive ? 1 : 0.75,
                       filter: isActive ? "blur(0px)" : "blur(3px)",
                     }}
                     whileHover={!isActive ? {
-                      scale: 0.92,
+                      scale: 0.94,
                       opacity: 0.9,
-                      y: yShift - 10,
+                      filter: "blur(1px)",
                       transition: { duration: 0.2 },
                     } : undefined}
                     transition={{ type: "spring", stiffness: 300, damping: 26, mass: 0.9 }}
                     style={{
                       position: "absolute",
-                      width: "85%",
+                      width: "78%",
                       zIndex,
                       transformOrigin: "bottom center",
                       borderColor: `hsl(var(--${plan.color}) / ${isActive ? 0.5 : 0.35})`,
